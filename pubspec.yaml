@@ -26,4 +26,4 @@ flutter:
     - assets/circle.png
 
 dependency_overrides:
-  flutter_plugin_android_lifecycle: 2.0.17
+  flutter_plugin_android_lifecycle: 2.0.24
