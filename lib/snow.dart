@@ -43,9 +43,7 @@ class SnowField {
   }
 
   void paint(Canvas canvas, Size size, Color color, double t) {
-    final p = Paint()
-      ..style = PaintingStyle.fill
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1.4);
+    final p = Paint()..style = PaintingStyle.fill;
     for (final f in flakes) {
       final tw = 0.35 + 0.65 * (0.5 + 0.5 * sin(t * 2 + f.phase)) * f.twinkle;
       p.color = color.withOpacity(0.55 * tw.clamp(0.0, 1.0));
