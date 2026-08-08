@@ -1,0 +1,51 @@
+name: Build APK
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.3
+
+      - name: Guardar codigo
+        run: |
+          cp pubspec.yaml /tmp/pubspec.yaml
+          cp -r lib /tmp/lib
+          cp -r assets /tmp/assets
+
+      - name: Generar android
+        run: flutter create --platforms=android --org com.jsus --project-name jsus_spectrum .
+
+      - name: Restaurar codigo
+        run: |
+          cp /tmp/pubspec.yaml pubspec.yaml
+          rm -rf lib && cp -r /tmp/lib lib
+          mkdir -p assets && cp -r /tmp/assets/. assets/
+
+      - name: minSdk 24
+        run: sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 24/' android/app/build.gradle.kts || true
+
+      - name: Dependencias
+        run: flutter pub get
+
+      - name: Compilar APK
+        run: flutter build apk --release
+
+      - name: Subir APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: JSUS-Spectrum-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
