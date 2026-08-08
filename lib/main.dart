@@ -80,9 +80,10 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<void> _loadAssets() async {
-    final bg = await _loadImage('assets/bg.png');
-    final circle = await _loadImage('assets/circle.png');
-    final pal = await extractPalette('assets/circle.png');
+    // fondo = cósmica (circle.png) ; centro = logo JSUS+ (bg.png)
+    final bg = await _loadImage('assets/circle.png');
+    final circle = await _loadImage('assets/bg.png');
+    final pal = await extractPalette('assets/bg.png');
     if (!mounted) return;
     setState(() {
       _bg = bg;
